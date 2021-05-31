@@ -30,29 +30,32 @@ class Game(tk.Toplevel):
 
     def start(self):
         try:
-            self.rounds = int(self.name_var.get()) * len(players) - 1
-            self.questions = fileWork.questionsFile()
-            self.askRounds.place_forget()
-            self.startButton.place_forget()
-            self.roundAsk.place_forget()
-            self.question = tk.StringVar()
-            self.currentPlayer = tk.StringVar()
+            if int(self.name_var.get()) < 1 :
+                tk.messagebox.showinfo("Błąd", "Zbyt mała liczba rund")
+            else:
+                self.rounds = int(self.name_var.get()) * len(players) - 1
+                self.questions = fileWork.questionsFile()
+                self.askRounds.place_forget()
+                self.startButton.place_forget()
+                self.roundAsk.place_forget()
+                self.question = tk.StringVar()
+                self.currentPlayer = tk.StringVar()
 
-            # define buttons "right" and "wrong"
-            self.right = tk.Button(self, text='OK', height=1, width=10,
-                                   command=lambda: [self.correct(), self.printQuestion()],
-                                   bg='goldenrod')
-            self.wrong = tk.Button(self, text='Źle', height=1, width=10,
-                                   command=lambda: [self.printQuestion()], bg='goldenrod')
+                # define buttons "right" and "wrong"
+                self.right = tk.Button(self, text='OK', height=1, width=10,
+                                       command=lambda: [self.correct(), self.printQuestion()],
+                                       bg='goldenrod')
+                self.wrong = tk.Button(self, text='Źle', height=1, width=10,
+                                       command=lambda: [self.printQuestion()], bg='goldenrod')
 
-            self.question.set(self.questions[random.randint(0, len(self.questions)) - 1])
-            self.currentPlayer.set(players[app.counter % len(players)])
+                self.question.set(self.questions[random.randint(0, len(self.questions)) - 1])
+                self.currentPlayer.set(players[app.counter % len(players)])
 
-            tk.Label(self, textvariable=self.currentPlayer, bg='bisque', font=("Arial", 15)).place(relx=0.30, rely=0.2)
-            tk.Label(self, textvariable=self.question, bg='bisque', font=("Arial", 15))\
-                .place(relx=0.5, rely=0.4, anchor='center')
+                tk.Label(self, textvariable=self.currentPlayer, bg='bisque', font=("Arial", 15)).place(relx=0.30, rely=0.2)
+                tk.Label(self, textvariable=self.question, bg='bisque', font=("Arial", 15))\
+                    .place(relx=0.5, rely=0.4, anchor='center')
 
-            self.countdown(5)
+                self.countdown(5)
 
         except ValueError:
             tk.messagebox.showinfo("Błąd", "Wpisz liczbę")
@@ -107,7 +110,10 @@ class Ranking(tk.Toplevel):
         self.resizable(False, False)
 
         tk.Button(self, text='Zamknij', height= 1, width=10, \
-                  command=lambda: [self.destroy(), self.ending()], bg='coral1').place(x=160, y=270)
+                  command=lambda: [self.destroy(), self.ending()], bg='coral1').place(x=280, y=270)
+
+        tk.Button(self, text='Zapisz', height=1, width=10, \
+                  command=lambda: [self.destroy(), self.save()], bg='coral1').place(x=30, y=270)
 
         scrollbar = tk.Scrollbar(self, orient="vertical")
         ranking = tk.Listbox(self, yscrollcommand=scrollbar.set, bg='bisque', \
@@ -120,3 +126,6 @@ class Ranking(tk.Toplevel):
 
     def ending(self):
         players[:] = []
+
+    def save(self):
+        fileWork.saveRanking()

@@ -1,4 +1,6 @@
 import tkinter.messagebox
+import datetime
+import game
 import question
 from tkinter import messagebox
 from question import *
@@ -16,6 +18,7 @@ def questionsFile():
             else:
                 questions.append(Question(question))
                 question = file.readline()
+        file.close()
         return questions
 
     except IOError:
@@ -30,6 +33,16 @@ def appendQuestion(question):
         try:
             file = open("questions", 'a', encoding='utf8')
             file.write("\n" + str(question))
-
+            file.close()
         except IOError:
             tkinter.messagebox.showinfo("Error", "Brak pliku")
+
+def saveRanking():
+    try:
+        file = open("ranking", 'a', encoding='utf8')
+        file.write("\n"+str(datetime.datetime.now()))
+        for i in game.players:
+            file.write("\n"+str(i))
+        file.close()
+    except IOError:
+        tkinter.messagebox.showinfo("Error", "Brak pliku")
