@@ -113,7 +113,7 @@ class Ranking(tk.Toplevel):
                   command=lambda: [self.destroy(), self.ending()], bg='coral1').place(x=280, y=270)
 
         tk.Button(self, text='Zapisz', height=1, width=10, \
-                  command=lambda: [self.destroy(), self.save()], bg='coral1').place(x=30, y=270)
+                  command=lambda: [self.destroy(), self.save()], bg='coral1').place(x=40, y=270)
 
         scrollbar = tk.Scrollbar(self, orient="vertical")
         ranking = tk.Listbox(self, yscrollcommand=scrollbar.set, bg='bisque', \
@@ -123,9 +123,6 @@ class Ranking(tk.Toplevel):
         for i in range(len(players)):
             ranking.insert(i, str(i + 1) + ". " + str(players[i]))
         ranking.place(relheight=0.9, relwidth=1)
-
-    def ending(self):
-        players[:] = []
 
     def save(self):
         fileWork.saveRanking()
