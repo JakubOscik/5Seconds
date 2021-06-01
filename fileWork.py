@@ -1,8 +1,6 @@
 import tkinter.messagebox
-import datetime
+import time
 import game
-import question
-from tkinter import messagebox
 from question import *
 
 def questionsFile():
@@ -40,7 +38,7 @@ def appendQuestion(question):
 def saveRanking():
     try:
         file = open("ranking", 'a', encoding='utf8')
-        file.write("\n"+str(datetime.datetime.now()))
+        file.write("\n"+str(time.strftime('%m/%d/%Y %H:%M:%S')))
         for i in game.players:
             file.write("\n"+str(i))
         file.close()
